@@ -107,7 +107,7 @@ public final class ByteBufUtil {
 
 OK，在JVM启动参数中添加上这个参数，并把它赋值为`unpooled`。
 
-![jvm_unpooled.png](https://gitee.com/coolcodingonline/source_code/raw/master/%E7%94%9F%E4%BA%A7%E9%97%AE%E9%A2%98/resources/jvm_unpooled.png)
+![jvm_unpooled.png](resources/jvm_unpooled.png)
 
 关闭了池化功能之后，还要能够实时地观测到内存是不是真的有泄漏，这要怎么做呢？
 
@@ -419,17 +419,17 @@ Connected to the target VM, address: '127.0.0.1:52162', transport: 'socket'
 
 下图是正常使用Netty时NioSocketChannel创建时的线程栈：
 
-![nettychannel](https://gitee.com/coolcodingonline/source_code/raw/master/%E7%94%9F%E4%BA%A7%E9%97%AE%E9%A2%98/resources/nettychannel.png)
+![nettychannel](resources/nettychannel.png)
 
 不过，我们现在的场景是 tomcat + Netty，那又是怎样的呢？
 
 此时，在NioSocketChannel的构造方法中打一个断点，发送一个请求，发现断点到了NioSocketChannel的构造方法中，观察线程栈的情况（从下往上看）：
 
-![channel01](https://gitee.com/coolcodingonline/source_code/raw/master/%E7%94%9F%E4%BA%A7%E9%97%AE%E9%A2%98/resources/channel05.png)
-![channel01](https://gitee.com/coolcodingonline/source_code/raw/master/%E7%94%9F%E4%BA%A7%E9%97%AE%E9%A2%98/resources/channel04.png)
-![channel01](https://gitee.com/coolcodingonline/source_code/raw/master/%E7%94%9F%E4%BA%A7%E9%97%AE%E9%A2%98/resources/channel03.png)
-![channel01](https://gitee.com/coolcodingonline/source_code/raw/master/%E7%94%9F%E4%BA%A7%E9%97%AE%E9%A2%98/resources/channel02.png)
-![channel01](https://gitee.com/coolcodingonline/source_code/raw/master/%E7%94%9F%E4%BA%A7%E9%97%AE%E9%A2%98/resources/channel01.png)
+![channel01](resources/channel05.png)
+![channel01](resources/channel04.png)
+![channel01](resources/channel03.png)
+![channel01](resources/channel02.png)
+![channel01](resources/channel01.png)
 
 可以看到，经过tomcat->spring->reactor->reactor-netty->netty，千转百回之后，终于创建了NioSocketChannel。
 
